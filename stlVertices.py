@@ -32,8 +32,14 @@ def plot(obj, cam, axes3d):
     objStacked = obj.reshape(-1, 3)
     camStacked = cam.reshape(-1, 3)
     objsStacked = np.concatenate((objStacked, camStacked), axis=0)
-    maxX, maxY, maxZ = objsStacked.max(0)
-    minX, minY, minZ = objsStacked.min(0)
+    pointsMax = objsStacked.max(0)
+    pointsMin = objsStacked.min(0)
+    pointsMean = (pointsMax + pointsMin) / 2.
+    correctAxes = (pointsMax - pointsMin)
+    correctAxes = correctAxes.max() / correctAxes
+    pointsMin = (pointsMin - pointsMean) * correctAxes + pointsMean
+    pointsMax = (pointsMax - pointsMean) * correctAxes + pointsMean
+
     axes3d.clear()
     axes3d.add_collection3d(mplot3d.art3d.Poly3DCollection(obj,
                                                            facecolor='b',
@@ -41,9 +47,9 @@ def plot(obj, cam, axes3d):
     axes3d.add_collection3d(mplot3d.art3d.Poly3DCollection(cam,
                                                            facecolor='b',
                                                            edgecolor='k'))
-    axes3d.set_xlim3d([minX, maxX])
-    axes3d.set_ylim3d([minY, maxY])
-    axes3d.set_zlim3d([minZ, maxZ])
+    axes3d.set_xlim3d([pointsMin[0], pointsMax[0]])
+    axes3d.set_ylim3d([pointsMin[1], pointsMax[1]])
+    axes3d.set_zlim3d([pointsMin[2], pointsMax[2]])
     axes3d.set_xlabel('x')
     axes3d.set_ylabel('y')
     axes3d.set_zlabel('z')
