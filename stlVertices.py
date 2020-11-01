@@ -16,7 +16,6 @@ def open(fName):
     correctOrientation = hg.mat3D((0, 0, 0, 0, - np.pi / 2., 0))
     correctOrientation = hg.mat3D((0, 0, 0.2, 0,
                                    0, np.pi / 2.)) @ correctOrientation
-    # correctOrientation = hg.mat3D((0, 0, 0, 0, 0, 0))
     homoP = hg.cart2homo(cartP)
     return correctOrientation @ homoP
 
@@ -50,10 +49,6 @@ def plot(obj, cam, camTransformE, camTransformI, axes2d, axes3d):
     axes3d.add_collection3d(mplot3d.art3d.Poly3DCollection(toVertices(obj),
                                                            facecolor='b',
                                                            edgecolor='k'))
-    # axes3d.add_collection3d(mplot3d.art3d.Poly3DCollection(toVertices(cam),
-    #                                                        facecolor='b',
-    #                                                        edgecolor='k'))
-
     addQuiver(axes3d, cam[:, 0], cam[:, 1], "red")
     addQuiver(axes3d, cam[:, 0], cam[:, 2], "green")
     addQuiver(axes3d, cam[:, 0], cam[:, 3], "blue")
