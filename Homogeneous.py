@@ -23,13 +23,13 @@ def cart2homo(cartVector):
 
     """
     cartVector = np.asarray(cartVector, dtype=np.float32)
-    homoVector = np.vstack((cartVector, np.ones(cartVector.shape[0])))
+    homoVector = np.vstack((cartVector, np.ones(cartVector.shape[1])))
     return homoVector
 
 
 def homo2cart(homoVector):
     homoVector = np.asarray(homoVector, dtype=np.float32)
-    cartVector = homoVector[0:1]
+    cartVector = homoVector[0:3, :]
     return cartVector
 
 
@@ -76,7 +76,7 @@ def mat2Dinv(H2):
 
 def rotMat3D(th):
     thx, thy, thz = th
-    Rx, Ry, Rz = np.swapaxes(rotMat2D(th), 0, 2)
+    Rx, Ry, Rz = rotMat2D(th).swapaxes(0, 2).swapaxes(1, 2)
     Rx = block_diag(1, Rx)
     Ry = np.reshape(Ry, Ry.size)
     Ry = np.array([[Ry[0], 0., Ry[2]], [0., 1., 0.], [Ry[1], 0., Ry[3]]])
